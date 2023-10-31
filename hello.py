@@ -29,6 +29,9 @@ driver.get('https://www.google.co.jp')
 search_bar = driver.find_element_by_name("q")
 search_bar.send_keys("python")
 
+
+
+
 # 検索ボタンを実行
 search_bar.submit()
 
