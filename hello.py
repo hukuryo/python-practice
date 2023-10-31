@@ -19,7 +19,23 @@
 from selenium import webdriver
 from time import sleep
 
+# ドライバーの場所を指定
 driver = webdriver.Chrome(R'C:\Users\xfukushima\Desktop\test_py\sample_dir\chromedriver')
 
+# 起動したいサイトのURLを入力
 driver.get('https://www.google.co.jp')
+
+# 開いたページの要素を取得
+search_bar = driver.find_element_by_name("q")
+search_bar.send_keys("python")
+
+# 検索ボタンを実行
+search_bar.submit()
+
+# 検索されたページの要素を取得
+for elem_h3 in driver.find_elements_by_xpath('//a/h3'):
+    elem_a = elem_h3.find_element_by_xpath('..')  
+    print(elem_h3.text)
+    print(elem_a.get_attribute('href'))
+    
 
