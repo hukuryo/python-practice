@@ -1,42 +1,31 @@
-# import time
-# import requests
-# from bs4 import BeautifulSoup
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4, portrait
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import os
 
-# # ①「教員プロフィール」からテキスト情報を読み込む
-# url1 = "https://www.flet.keio.ac.jp"
-# response1 = requests.get(url1)
-# soup1 = BeautifulSoup(response1.text, 'html.parser')
+# ユーザのデスクトップのディレクトリを取得
+file = "sample.pdf"
+file_path = os.path.expanduser("~") + "/Desktop/" + file
 
-# # クロール範囲のリスト化（例: リンクのリスト）
-# links = [a['href'] for a in soup1.find_all('a')]
-# # ②「研究者データベース」で氏名検索
-# url2 = "https://www.k-ris.keio.ac.jp/"
-# driver = webdriver.Chrome()  # Chromeドライバーのパスを指定
-# driver.get(url2)
-# print(driver)
+# A4の新規PDFファイルを作成
+page = canvas.Canvas(file_path, pagesize=portrait(A4))
 
+# フォントの読み込み
+pdfmetrics.registerFont(TTFont("HGRGE", "C:/Windows/Fonts/HGRGE.TTC"))
+pdfmetrics.registerFont(TTFont("HGRME", "C:/Windows/Fonts/HGRME.TTC"))
 
-from selenium import webdriver
-from time import sleep
+# フォントの設定(第1引数：フォント、第2引数：サイズ)
+page.setFont("HGRGE", 20)
 
-# ドライバーの場所を指定
-driver = webdriver.Chrome(R'C:\Users\xfukushima\Desktop\test_py\sample_dir\chromedriver')
+# 指定座標が左端となるように文字を挿入
+page.drawString(200, 300, "Hello World!")
 
-# 起動したいサイトのURLを入力
-driver.get('https://www.google.co.jp')
+# 指定座標が中心となるように文字を挿入
+page.drawCentredString(200, 200, "Hello World!")
 
-# 開いたページの要素を取得
-search_bar = driver.find_element_by_name("q")
-search_bar.send_keys("python")
+# 指定座標が右端となるように文字を挿入
+page.drawRightString(200, 100, "Hello World!")
 
-
-# 検索ボタンを実行
-search_bar.submit()
-
-# 検索されたページの要素を取得
-for elem_h3 in driver.find_elements_by_xpath('//a/h3'):
-    elem_a = elem_h3.find_element_by_xpath('..')  
-    print(elem_h3.text)
-    print(elem_a.get_attribute('href'))
-    
-
+# PDFファイルとして保存
+page.save()
